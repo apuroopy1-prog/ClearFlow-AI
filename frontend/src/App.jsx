@@ -117,7 +117,7 @@ function Layout({ children }) {
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-          <span className="text-xl font-bold text-blue-600 dark:text-blue-400">AccountingGPT</span>
+          <span className="text-xl font-bold text-blue-600 dark:text-blue-400">ClearFlow AI</span>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">

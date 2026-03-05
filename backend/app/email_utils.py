@@ -34,12 +34,12 @@ def _send_smtp(to: str, subject: str, html: str) -> None:
 
 def send_report_email(to: str, pdf_bytes: bytes, month: str) -> None:
     """Send monthly PDF report as email attachment. Falls back to logging if SMTP not configured."""
-    subject = f"AccountingGPT — Monthly Report ({month})"
+    subject = f"ClearFlow AI — Monthly Report ({month})"
     html = f"""
     <div style="font-family:sans-serif;max-width:480px;margin:auto">
       <h2 style="color:#2563eb">Your Monthly Financial Report</h2>
-      <p>Please find your AccountingGPT monthly summary for <strong>{month}</strong> attached as a PDF.</p>
-      <p style="color:#6b7280;font-size:12px">Generated automatically by AccountingGPT.</p>
+      <p>Please find your ClearFlow AI monthly summary for <strong>{month}</strong> attached as a PDF.</p>
+      <p style="color:#6b7280;font-size:12px">Generated automatically by ClearFlow AI.</p>
     </div>
     """
 
@@ -72,11 +72,11 @@ def send_report_email(to: str, pdf_bytes: bytes, month: str) -> None:
 
 
 async def send_reset_email(to: str, reset_link: str) -> None:
-    subject = "AccountingGPT — Password Reset"
+    subject = "ClearFlow AI — Password Reset"
     html = f"""
     <div style="font-family:sans-serif;max-width:480px;margin:auto">
       <h2 style="color:#2563eb">Reset your password</h2>
-      <p>Click the button below to reset your AccountingGPT password.
+      <p>Click the button below to reset your ClearFlow AI password.
          This link expires in <strong>15 minutes</strong>.</p>
       <a href="{reset_link}"
          style="display:inline-block;padding:12px 24px;background:#2563eb;color:#fff;

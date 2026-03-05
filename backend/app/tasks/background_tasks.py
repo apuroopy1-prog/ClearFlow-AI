@@ -191,7 +191,7 @@ def check_alerts_task():
             if alerts:
                 send_email(
                     recipient=user.email,
-                    message="AccountingGPT Alerts:\n\n" + "\n".join(f"- {a}" for a in alerts),
+                    message="ClearFlow AI Alerts:\n\n" + "\n".join(f"- {a}" for a in alerts),
                 )
                 logger.info(f"Sent {len(alerts)} alert(s) to {user.email}")
 

@@ -1,4 +1,4 @@
-# AccountingGPT
+# ClearFlow AI
 
 > **AI-powered financial management platform for small businesses** — built with Claude AI, LangGraph, FastAPI, and React.
 
@@ -14,7 +14,7 @@
 
 ## What It Does
 
-AccountingGPT turns a bank statement PDF into a full financial intelligence dashboard — no manual data entry, no spreadsheets.
+ClearFlow AI turns a bank statement PDF into a full financial intelligence dashboard — no manual data entry, no spreadsheets.
 
 Upload your bank statement → AI extracts every transaction → ask questions in plain English → get forecasts, anomaly alerts, and budget tracking.
 
@@ -106,8 +106,8 @@ graph.add_edge("tools", "agent")
 ### Run
 
 ```bash
-git clone https://github.com/apuroopy1-prog/accountinggpt-poc.git
-cd accountinggpt-poc
+git clone https://github.com/apuroopy1-prog/clearflow-ai.git
+cd clearflow-ai
 
 cp .env.example .env
 # Edit .env — add your ANTHROPIC_API_KEY
@@ -125,7 +125,7 @@ Register a new account on first run.
 ## Project Structure
 
 ```
-accountinggpt-poc/
+clearflow-ai/
 ├── backend/
 │   ├── app/
 │   │   ├── routers/          # FastAPI route handlers

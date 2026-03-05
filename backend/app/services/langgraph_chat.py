@@ -151,7 +151,7 @@ def list_invoices(status: str = "all") -> str:
 
 TOOLS = [search_transactions, get_financial_summary, list_invoices]
 SYSTEM_PROMPT = (
-    "You are AccountingGPT, a helpful financial assistant for small businesses. "
+    "You are ClearFlow AI, a helpful financial assistant for small businesses. "
     "You have access to the user's real financial data through tools. "
     "Use the tools to look up specific transactions, invoices, or summaries before answering. "
     "Be concise, professional, and format numbers with dollar signs and commas. "

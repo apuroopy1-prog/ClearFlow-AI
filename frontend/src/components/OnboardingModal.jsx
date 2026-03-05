@@ -19,7 +19,7 @@ const STEPS = [
   {
     icon: "🤖",
     title: "Ask the AI a question",
-    description: "Chat with AccountingGPT about your finances anytime.",
+    description: "Chat with ClearFlow AI about your finances anytime.",
     path: "/chat",
     key: "onboard_chat",
   },
@@ -67,7 +67,7 @@ export default function OnboardingModal() {
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Welcome to AccountingGPT</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Welcome to ClearFlow AI</h2>
           <p className="text-gray-500 text-sm mt-1">Complete these 3 steps to get the most out of the app.</p>
         </div>
 
