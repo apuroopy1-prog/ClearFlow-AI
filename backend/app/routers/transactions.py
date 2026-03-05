@@ -326,6 +326,22 @@ async def upload_pdf(
     }
 
 
+@router.delete("/clear-all", response_model=dict)
+async def clear_all_transactions(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete ALL transactions for the current user."""
+    result = await db.execute(
+        delete(Transaction).where(Transaction.user_id == current_user.id)
+    )
+    await db.commit()
+    from app.services.rag_service import rag_service
+    rag_service.invalidate(current_user.id)
+    invalidate_user_caches(current_user.id)
+    return {"deleted": result.rowcount}
+
+
 @router.delete("/clear-mock", response_model=dict)
 async def clear_mock_transactions(
     current_user: User = Depends(get_current_user),

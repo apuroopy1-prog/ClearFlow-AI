@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import {
   Chart as ChartJS,
@@ -131,6 +132,8 @@ export default function Dashboard() {
     scales: { y: { beginAtZero: false } },
   };
 
+  const hasTransactions = summary && (summary.total_income > 0 || summary.total_expenses > 0 || summary.transaction_count > 0);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -156,6 +159,25 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
+
+      {/* Upload banner — shown when no transactions */}
+      {!loading && !hasTransactions && (
+        <div className="bg-indigo-50 border border-indigo-200 rounded-xl px-6 py-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-indigo-800 font-semibold text-sm">No transactions yet</p>
+            <p className="text-indigo-600 text-xs mt-0.5">Upload your bank statement PDF to populate your dashboard with real data.</p>
+          </div>
+          <Link
+            to="/transactions"
+            className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            Upload Bank PDF
+          </Link>
+        </div>
+      )}
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

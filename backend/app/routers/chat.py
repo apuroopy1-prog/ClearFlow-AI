@@ -111,14 +111,29 @@ async def get_insights(
         }],
     )
 
-    import json
-    try:
-        insights = json.loads(message.content[0].text)
-        if not isinstance(insights, list):
-            raise ValueError
-    except Exception:
-        # fallback: split by newline
-        insights = [line.lstrip("•-123. ").strip() for line in message.content[0].text.splitlines() if line.strip()][:3]
+    import json, re
+    raw = message.content[0].text.strip()
+    insights = None
+    # Try to extract a JSON array from anywhere in the response
+    json_match = re.search(r'\[[\s\S]*?\]', raw)
+    if json_match:
+        try:
+            parsed = json.loads(json_match.group())
+            if isinstance(parsed, list):
+                insights = [str(i).strip() for i in parsed if str(i).strip()]
+        except Exception:
+            pass
+    if not insights:
+        # Fallback: split by newline, skip lines that look like JSON syntax
+        insights = [
+            line.lstrip("•-123456789. \"").rstrip("\",").strip()
+            for line in raw.splitlines()
+            if line.strip()
+            and not line.strip().startswith("[")
+            and not line.strip().startswith("]")
+            and not line.strip().startswith("```")
+            and len(line.strip()) > 10
+        ][:3]
 
     _insights_cache[current_user.id] = {"insights": insights, "ts": time.time()}
     return {"insights": insights}

@@ -42,6 +42,7 @@ export default function Transactions() {
   const [uploadResult, setUploadResult] = useState(null);
   const [activeTab, setActiveTab] = useState("all");
   const [clearingMock, setClearingMock] = useState(false);
+  const [clearingAll, setClearingAll] = useState(false);
   const [autoTaxing, setAutoTaxing] = useState(false);
   const [editingTax, setEditingTax] = useState(null);
   const fileInputRef = useRef(null);
@@ -83,6 +84,21 @@ export default function Transactions() {
   };
 
   useEffect(() => { fetchTransactions(); }, []);
+
+  const clearAll = async () => {
+    if (!window.confirm(`Delete all ${transactions.length} transactions? This cannot be undone.`)) return;
+    setClearingAll(true);
+    try {
+      const res = await api.delete("/transactions/clear-all");
+      setTransactions([]);
+      setActiveTab("all");
+      setUploadResult({ success: true, inserted: 0, skipped: 0, _clearMsg: `Cleared ${res.data.deleted} transaction${res.data.deleted !== 1 ? "s" : ""}. Upload a new bank PDF to start fresh.` });
+    } catch {
+      setUploadResult({ success: false, message: "Failed to clear transactions" });
+    } finally {
+      setClearingAll(false);
+    }
+  };
 
   const clearMock = async () => {
     setClearingMock(true);
@@ -233,6 +249,15 @@ export default function Transactions() {
           >
             {autoTaxing ? "Categorizing..." : "🧾 Auto-Tax"}
           </button>
+          {transactions.length > 0 && (
+            <button
+              onClick={clearAll}
+              disabled={clearingAll || uploading || uploadingPdf}
+              className="bg-white border border-red-200 hover:bg-red-50 disabled:opacity-50 text-red-500 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            >
+              {clearingAll ? "Clearing..." : "Clear All"}
+            </button>
+          )}
           <button
             onClick={() => pdfInputRef.current.click()}
             disabled={uploading || uploadingPdf}
@@ -305,10 +330,31 @@ export default function Transactions() {
       {loading ? (
         <div className="text-center text-gray-400 mt-20">Loading...</div>
       ) : visibleTransactions.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center text-gray-400">
-          {activeTab === "all"
-            ? "No transactions yet. Upload a bank statement PDF or CSV to get started."
-            : `No ${SOURCE_TABS.find((t) => t.key === activeTab)?.label} transactions.`}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+          {activeTab === "all" ? (
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-14 h-14 bg-indigo-50 rounded-full flex items-center justify-center">
+                <svg className="w-7 h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-gray-700 font-semibold text-base">No transactions yet</p>
+                <p className="text-gray-400 text-sm mt-1">Upload your bank statement PDF or CSV to get started</p>
+              </div>
+              <button
+                onClick={() => pdfInputRef.current.click()}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                Upload Bank PDF
+              </button>
+            </div>
+          ) : (
+            <p className="text-gray-400">{`No ${SOURCE_TABS.find((t) => t.key === activeTab)?.label} transactions.`}</p>
+          )}
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
